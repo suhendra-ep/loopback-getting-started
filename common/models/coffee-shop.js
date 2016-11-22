@@ -18,11 +18,36 @@ module.exports = function (Coffeeshop) {
         cb(null, response);
     };
 
+    Coffeeshop.getName = function (shopId, cb) {
+        Coffeeshop.findById(shopId, function (err, instance) {
+            var response = "Name of coffee shop is " + instance.name;
+            cb(null, response);
+        });
+    };
+
     Coffeeshop.remoteMethod(
         'status', {
             http: {
                 path: '/status',
                 verb: 'get'
+            },
+            returns: {
+                arg: 'status',
+                type: 'string'
+            }
+        }
+    );
+
+    Coffeeshop.remoteMethod(
+        'getName', {
+            http: {
+                path: '/getName',
+                verb: 'get'
+            },
+            accepts: {
+                arg: 'id',
+                type: 'number',
+                http: { source: 'query' }
             },
             returns: {
                 arg: 'status',
